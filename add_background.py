@@ -1,8 +1,7 @@
 from PIL import Image
 import os
 # adapted from https://blog.waicung.net/adding-background-to-png/
-def add_background(before_directory, after_directory, filename):
-    os.chdir(before_directory)
+def add_background(after_directory, filename):
     im = Image.open(filename)
     fill_color = (255,255,255)  # white background color
     im = im.convert("RGBA")  

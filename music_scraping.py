@@ -15,9 +15,9 @@ print("2: Use BS to download\n")
 choice = input()
 url = input("Please enter a desired url: ")
 
-
-example_url = "https://www.jitashe.org/tab/92993"
-response = requests.get(example_url)
+if url == "":
+    url = "https://www.jitashe.org/tab/92993"
+response = requests.get(url)
 
 soup = BeautifulSoup(response.text, "html.parser")
 all_images = soup.find_all("img")
@@ -34,16 +34,17 @@ if (int(choice) == 1):
     with open('url.txt', 'w') as f:
         f.writelines(valid_images)
 else:
+    os.chdir("./before_process")
     for url in valid_images:
         # construct a filename using the last part of the url
         filename = re.search(r'/([\w_-]+[.](jpg|png))$', url)
         with open(filename.group(), 'wb') as f: # write as binary file
             resp = requests.get(url)
             f.write(resp.content)
-        add_background("./before_process", "./after_process", filename)
+        add_background("./after_process", filename)
         image_file.append(filename)
 
-combine_pdf("./after_process", "../result_files", image_file, "myPDF")
+combine_pdf("../result_files", image_file, "myPDF.pdf")
 
 # remove redundant files using glob lib
 # for file in glob.glob("*.png"):
